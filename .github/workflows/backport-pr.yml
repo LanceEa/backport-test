@@ -7,24 +7,24 @@ on:
     
 jobs:
   backport-pr:
-      name: Backport PR
-      runs-on: ubuntu-latest
-      if: |
-        github.event.pull_request.merged == true
-        && contains(github.event.pull_request.labels.*.name, 'backport')
-        && (
-          (github.event.action == 'labeled' && github.event.label.name == 'backport')
-          || (github.event.action == 'closed')
-        )
-      steps:
-        - name: Backport Action
-        uses: sqren/backport-github-action@v8.9.3
-        with:
-          # additional settings are found in the .backportrc.json at the root of the repository
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Info log
-        if: ${{ success() }}
-        run: cat ~/.backport/backport.info.log
-      - name: Debug log
-        if: ${{ failure() }}
-        run: cat ~/.backport/backport.debug.log
+    name: Backport PR
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged == true
+      && contains(github.event.pull_request.labels.*.name, 'backport')
+      && (
+        (github.event.action == 'labeled' && github.event.label.name == 'backport')
+        || (github.event.action == 'closed')
+      )
+    steps:
+    - name: Backport Action
+      uses: sqren/backport-github-action@v8.9.3
+      with:
+        # additional settings are found in the .backportrc.json at the root of the repository
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Info log
+      if: ${{ success() }}
+      run: cat ~/.backport/backport.info.log
+    - name: Debug log
+      if: ${{ failure() }}
+      run: cat ~/.backport/backport.debug.log
