@@ -1,0 +1,12 @@
+{
+  "repoOwner": "LanceEa",
+  "repoName": "backport-test",
+  "autoMerge": false,
+  "autoMergeMethod": "rebase",
+  "branchLabelMapping": {
+    "^v(\\d+).(\\d+)": "release/v$1.$2"
+  },
+  "backportBinary": "npx backport",
+  "fork": false,
+  "signff": true
+}
