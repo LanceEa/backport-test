@@ -1,5 +1,0 @@
-{
-    "branchLabelMapping": {
-        "^v(\\d+).(\\d+)": "release/v$1.$2"
-    }
-}
