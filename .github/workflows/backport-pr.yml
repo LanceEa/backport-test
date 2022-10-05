@@ -1,0 +1,34 @@
+name: Backport PR
+on:
+  pull_request:
+    branches:
+      - main
+    types: ["closed", "labeled"]
+    
+jobs:
+  backport:
+      name: Backport
+      runs-on: ubuntu-latest
+      # Only react to merged PRs for security reasons.
+      # See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target.
+      if: |
+        github.event.pull_request.merged == true
+        && contains(github.event.pull_request.labels.*.name, 'backport')
+        && (
+          (github.event.action == 'labeled' && github.event.label.name == 'backport')
+          || (github.event.action == 'closed')
+        )
+      steps:
+        - name: Backport Action
+          uses: sqren/backport-github-action@v8.9.3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            auto_backport_label_prefix: backport-
+
+        - name: Info log
+          if: ${{ success() }}
+          run: cat ~/.backport/backport.info.log
+
+        - name: Debug log
+          if: ${{ failure() }}
+          run: cat ~/.backport/backport.debug.log 
